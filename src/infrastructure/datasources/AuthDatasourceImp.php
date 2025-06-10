@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Datasources;
 
 use App\Config\BcryptAdapter;
-use App\Data\PostgresDB\Models\User;
+use App\Data\MySQL\Models\User;
 use App\Domain\Datasources\AuthDatasource;
 use App\Domain\DTOs\Auth\LoginUserDto;
 use App\Domain\DTOs\Auth\RegisterUserDto;

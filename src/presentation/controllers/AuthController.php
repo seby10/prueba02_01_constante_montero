@@ -2,7 +2,7 @@
 
 namespace App\Presentation\Controllers;
 
-use App\Data\PostgresDB\Models\User;
+use App\Data\MySQL\Models\User;
 use App\Domain\DTOs\Auth\LoginUserDto;
 use App\Domain\DTOs\Auth\RegisterUserDto;
 use App\Domain\Errors\CustomError;

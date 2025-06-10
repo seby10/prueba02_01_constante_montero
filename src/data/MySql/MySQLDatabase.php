@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\MySQLDB;
+namespace App\Data\MySQL;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
@@ -23,10 +23,6 @@ class MySQLDatabase
 
     public function connect(array $options): bool
     {
-        if ($this->isConnected) {
-            echo "MySQL ya está conectado\n";
-            return true;
-        }
 
         try {
             $this->capsule = new Capsule;
@@ -52,7 +48,7 @@ class MySQLDatabase
             $this->capsule->getConnection()->getPdo();
 
             $this->isConnected = true;
-            echo "MySQL connected successfully\n";
+            //echo "MySQL connected successfully\n";
             
             // Create tables if they don't exist
             $this->createTables();
@@ -87,9 +83,9 @@ class MySQLDatabase
                 $table->timestamps();
             });
             
-            echo "Tabla 'users' creada exitosamente\n";
+            //echo "Tabla 'users' creada exitosamente\n";
         } else {
-            echo "Tabla 'users' ya existe\n";
+            //echo "Tabla 'users' ya existe\n";
         }
     }
 }

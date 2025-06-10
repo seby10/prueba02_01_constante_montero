@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data\MySQL;
+namespace App\Data\PostgresDB;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;

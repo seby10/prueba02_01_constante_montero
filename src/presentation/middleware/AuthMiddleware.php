@@ -3,7 +3,7 @@
 namespace App\Presentation\Middleware;
 
 use App\Config\JwtConfig;
-use App\Data\PostgresDB\Models\User;
+use App\Data\MySQL\Models\User;
 
 class AuthMiddleware
 {
