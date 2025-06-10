@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Data\MySQLDB\MySQLDatabase;
+use App\Data\MySQL\MySQLDatabase;
 use App\Config\Environment;
 use App\Config\JwtConfig;
 
