@@ -3,6 +3,7 @@
 namespace App\Config;
 
 use Dotenv\Dotenv;
+
 class Environment
 {
     private static ?Environment $instance = null;
@@ -18,11 +19,12 @@ class Environment
             'MONGO_URL' => $this->getEnv('MONGO_DB_URL'),
             'MONGO_DB_NAME' => $this->getEnv('MONGO_DB_NAME'),
             'JWT_SEED' => $this->getEnv('JWT_SEED'),
-            'POSTGRES_DB_NAME' => $this->getEnv('POSTGRES_DB_NAME'),
-            'POSTGRES_HOST' => $this->getEnv('POSTGRES_HOST'),
-            'POSTGRES_PORT' => $this->getEnv('POSTGRES_PORT', 5432),
-            'POSTGRES_USER' => $this->getEnv('POSTGRES_USER'),
-            'POSTGRES_PASSWORD' => $this->getEnv('POSTGRES_PASSWORD'),
+
+            'MYSQL_DB_NAME' => $this->getEnv('MYSQL_DB_NAME'),
+            'MYSQL_HOST' => $this->getEnv('MYSQL_HOST'),
+            'MYSQL_PORT' => $this->getEnv('MYSQL_PORT', 3306),
+            'MYSQL_USER' => $this->getEnv('MYSQL_USER'),
+            'MYSQL_PASSWORD' => $this->getEnv('MYSQL_PASSWORD', ''), // Vacío por defecto para XAMPP
         ];
     }
 
@@ -43,7 +45,7 @@ class Environment
     {
         $value = $_ENV[$key] ?? $default;
         
-        if ($value === null) {
+        if ($value === null && $key !== 'MYSQL_PASSWORD') {
             throw new \Exception("Environment variable {$key} is required");
         }
         

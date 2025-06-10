@@ -2,7 +2,7 @@
 
 namespace App\Presentation\Controllers;
 
-use App\Data\PostgresDB\Models\User;
+use App\Data\MySQLDB\Models\User;
 use App\Domain\DTOs\Auth\LoginUserDto;
 use App\Domain\DTOs\Auth\RegisterUserDto;
 use App\Domain\Errors\CustomError;
@@ -61,17 +61,16 @@ class AuthController
     public function getUsers(Request $request, Response $response): Response
     {
         try {
-
             $user = $request->getAttribute('user');
 
             if (!$user) {
                 error_log("User is NULL in controller");
                 return $this->jsonResponse($response, ['error' => 'Unauthorized: User not found in request'], 401);
             }
+            
             $users = User::all();
 
             return $this->jsonResponse($response, [
-                // 'message' => 'Users endpoint',
                 'users' => $users->toArray(),
                 'authenticated_user' => [
                     'id' => $user->id,
