@@ -14,7 +14,7 @@ class DatabaseAuthUnitOfWork implements AuthUnitOfWork
         private Manager $db,
         ?AuthRepository $authRepository = null
     ) {
-        $this->authRepository = $authRepository ?? new MySQLAuthRepository($db);
+        $this->authRepository = $authRepository ?? new AuthRepository($db);
     }
 
     public function beginTransaction(): void
