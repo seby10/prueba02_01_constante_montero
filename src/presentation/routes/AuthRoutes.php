@@ -4,12 +4,12 @@ namespace App\Presentation\Routes;
 
 use App\Infrastructure\Datasources\AuthDatasourceImp;
 use App\Infrastructure\Repositories\AuthRepositoryImp;
+use App\Infrastructure\Repositories\DatabaseAuthUnitOfWork;
 use App\Presentation\Controllers\AuthController;
 use App\Presentation\Middleware\AuthMiddleware;
 use App\Presentation\Routes\AppRoutes;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
-
 class AuthRoutes
 {
     public static function register(string $prefix = ''): void

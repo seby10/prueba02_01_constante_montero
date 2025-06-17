@@ -2,11 +2,12 @@
 
 namespace App\Presentation\Controllers;
 
-use App\Data\PostgresDB\Models\User;
+use App\Data\MySQL\Models\User;
 use App\Domain\DTOs\Auth\LoginUserDto;
 use App\Domain\DTOs\Auth\RegisterUserDto;
 use App\Domain\Errors\CustomError;
 use App\Domain\Repositories\AuthRepository;
+use App\Domain\Repositories\AuthUnitOfWork;
 use App\Domain\UseCases\Auth\LoginUserUseCase;
 use App\Domain\UseCases\Auth\RegisterUserUseCase;
 use Psr\Http\Message\ResponseInterface as Response;

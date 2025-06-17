@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Data\PostgresDB;
+namespace App\Data\MySQL;
 
 use App\Data\Database;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
 
-class PostgresDatabase extends Database
+class MySQLDatabase extends Database
 {
-    private static ?PostgresDatabase $instance = null;
+    private static ?MySQLDatabase $instance = null;
 
     private function __construct() {}
 
@@ -30,15 +30,17 @@ class PostgresDatabase extends Database
             $this->capsule = new Capsule;
             
             $this->capsule->addConnection([
-                'driver' => 'pgsql',
+                'driver' => 'mysql',
                 'host' => $options['host'],
                 'port' => $options['port'],
                 'database' => $options['database'],
                 'username' => $options['user'],
                 'password' => $options['password'],
-                'charset' => 'utf8',
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
                 'prefix' => '',
-                'schema' => 'public',
+                'strict' => true,
+                'engine' => null,
             ]);
 
             $this->capsule->setAsGlobal();
@@ -51,7 +53,7 @@ class PostgresDatabase extends Database
             
             return true;
         } catch (\Exception $e) {
-            echo "Error connecting to PostgreSQL: " . $e->getMessage() . "\n";
+            echo "Error connecting to MySQL: " . $e->getMessage() . "\n";
             throw $e;
         }
     }
@@ -75,7 +77,7 @@ class PostgresDatabase extends Database
                 $table->string('email')->unique();
                 $table->string('password');
                 $table->string('img')->nullable();
-                $table->json('roles')->default(json_encode(['USER_ROLE']));
+                $table->json('roles');
                 $table->timestamps();
             });
         }

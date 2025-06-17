@@ -3,19 +3,23 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Data\PostgresDB\PostgresDatabase;
+
 use App\Config\Environment;
 use App\Config\JwtConfig;
+use App\Data\MySQL\MySQLDatabaseFactory;
+use App\Data\PostgresDB\PostgresDatabaseFactory;
 
 $env = Environment::getInstance();
 
 try {
-    $db = PostgresDatabase::getInstance();
-    $db->connect([
-        'host'     => $env->get('POSTGRES_HOST'),
-        'port'     => $env->get('POSTGRES_PORT'),
+    $dbFactory = new PostgresDatabaseFactory();
+
+    $database = $dbFactory->createDatabase();
+    $database->connect([
+        'host' => $env->get('POSTGRES_HOST'),
+        'port' => $env->get('POSTGRES_PORT'),
         'database' => $env->get('POSTGRES_DB_NAME'),
-        'user'     => $env->get('POSTGRES_USER'),
+        'user' => $env->get('POSTGRES_USER'),
         'password' => $env->get('POSTGRES_PASSWORD')
     ]);
 } catch (\Exception $e) {
@@ -24,21 +28,21 @@ try {
     echo json_encode(['error' => 'Failed to connect to database']);
     exit;
 }
+
 JwtConfig::init();
 
-// 2. Configuración CORS (tu código actual)
+
 header('Access-Control-Allow-Origin: http://localhost:5173');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Access-Control-Allow-Credentials: true');
 
-// 3. Manejar preflight requests (tu código actual)
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// 4. Resto de tu lógica (PSR-7, rutas, etc.)
 try {
     $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
     $creator = new \Nyholm\Psr7Server\ServerRequestCreator(

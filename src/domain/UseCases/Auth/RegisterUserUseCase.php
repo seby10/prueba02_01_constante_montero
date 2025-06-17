@@ -5,6 +5,7 @@ use App\Config\JwtConfig;
 use App\Domain\DTOs\Auth\RegisterUserDto;
 use App\Domain\Errors\CustomError;
 use App\Domain\Repositories\AuthRepository;
+use App\Domain\Repositories\AuthUnitOfWork;
 
 interface RegisterUserUseCaseInterface
 {
@@ -40,3 +41,4 @@ class RegisterUserUseCase implements RegisterUserUseCaseInterface
         ];
     }
 }
+
