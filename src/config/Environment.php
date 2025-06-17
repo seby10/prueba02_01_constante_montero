@@ -21,7 +21,11 @@ class Environment
             'MYSQL_HOST' => $this->getEnv('MYSQL_HOST'),
             'MYSQL_PORT' => $this->getEnv('MYSQL_PORT', 3306),
             'MYSQL_USER' => $this->getEnv('MYSQL_USER'),
-            'MYSQL_PASSWORD' => $this->getEnv('MYSQL_PASSWORD'),
+            'POSTGRES_DB_NAME' => $this->getEnv('POSTGRES_DB_NAME'),
+            'POSTGRES_HOST' => $this->getEnv('POSTGRES_HOST'),
+            'POSTGRES_PORT' => $this->getEnv('POSTGRES_PORT'),
+            'POSTGRES_USER' => $this->getEnv('POSTGRES_USER'),
+            'POSTGRES_PASSWORD' => $this->getEnv('POSTGRES_PASSWORD')
         ];
     }
     

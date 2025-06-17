@@ -7,19 +7,20 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Config\Environment;
 use App\Config\JwtConfig;
 use App\Data\MySQL\MySQLDatabaseFactory;
+use App\Data\PostgresDB\PostgresDatabaseFactory;
 
 $env = Environment::getInstance();
 
 try {
-    $dbFactory = new MySQLDatabaseFactory();
+    $dbFactory = new PostgresDatabaseFactory();
 
     $database = $dbFactory->createDatabase();
     $database->connect([
-        'host' => $env->get('MYSQL_HOST'),
-        'port' => $env->get('MYSQL_PORT'),
-        'database' => $env->get('MYSQL_DB_NAME'),
-        'user' => $env->get('MYSQL_USER'),
-        'password' => $env->get('MYSQL_PASSWORD')
+        'host' => $env->get('POSTGRES_HOST'),
+        'port' => $env->get('POSTGRES_PORT'),
+        'database' => $env->get('POSTGRES_DB_NAME'),
+        'user' => $env->get('POSTGRES_USER'),
+        'password' => $env->get('POSTGRES_PASSWORD')
     ]);
 } catch (\Exception $e) {
     error_log('Database connection failed: ' . $e->getMessage());
