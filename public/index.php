@@ -6,18 +6,20 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Config\Environment;
 use App\Config\JwtConfig;
-use App\Data\MySQL\MySQLDatabase;
+use App\Data\MySQL\MySQLDatabaseFactory;
 
 $env = Environment::getInstance();
 
 try {
-    $db = MySQLDatabase::getInstance();
-    $db->connect([
-        'host'     => $env->get('MYSQL_HOST'),
-        'port'     => $env->get('MYSQL_PORT'),
-        'database' => $env->get('MYSQL_DB_NAME'),
-        'user'     => $env->get('MYSQL_USER'),
-        'password' => $env->get('MYSQL_PASSWORD')
+    $dbFactory = new MySQLDatabaseFactory();
+
+    $database = $dbFactory->createDatabase();
+    $database->connect([
+        'host' => 'localhost',
+        'port' => 3306,
+        'database' => 'mydb',
+        'user' => 'root',
+        'password' => ''
     ]);
 } catch (\Exception $e) {
     error_log('Database connection failed: ' . $e->getMessage());

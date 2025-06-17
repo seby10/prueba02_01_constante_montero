@@ -2,14 +2,13 @@
 
 namespace App\Data\MySQL;
 
+use App\Data\Database;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
 
-class MySQLDatabase
+class MySQLDatabase extends Database
 {
     private static ?MySQLDatabase $instance = null;
-    private bool $isConnected = false;
-    private Capsule $capsule;
 
     private function __construct() {}
 
@@ -23,6 +22,9 @@ class MySQLDatabase
 
     public function connect(array $options): bool
     {
+        if ($this->isConnected) {
+            return true;
+        }
 
         try {
             $this->capsule = new Capsule;
@@ -44,13 +46,9 @@ class MySQLDatabase
             $this->capsule->setAsGlobal();
             $this->capsule->bootEloquent();
 
-            // Test connection
             $this->capsule->getConnection()->getPdo();
-
             $this->isConnected = true;
-            //echo "MySQL connected successfully\n";
             
-            // Create tables if they don't exist
             $this->createTables();
             
             return true;
@@ -68,7 +66,7 @@ class MySQLDatabase
         return $this->capsule;
     }
 
-    private function createTables(): void
+    protected function createTables(): void
     {
         $schema = $this->capsule->schema();
         
@@ -82,10 +80,6 @@ class MySQLDatabase
                 $table->json('roles');
                 $table->timestamps();
             });
-            
-            //echo "Tabla 'users' creada exitosamente\n";
-        } else {
-            //echo "Tabla 'users' ya existe\n";
         }
     }
 }

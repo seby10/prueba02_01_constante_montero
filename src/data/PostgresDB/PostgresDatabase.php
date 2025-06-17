@@ -2,14 +2,13 @@
 
 namespace App\Data\PostgresDB;
 
+use App\Data\Database;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
 
-class MySQLDatabase
+class PostgresDatabase extends Database
 {
-    private static ?MySQLDatabase $instance = null;
-    private bool $isConnected = false;
-    private Capsule $capsule;
+    private static ?PostgresDatabase $instance = null;
 
     private function __construct() {}
 
@@ -24,7 +23,6 @@ class MySQLDatabase
     public function connect(array $options): bool
     {
         if ($this->isConnected) {
-            echo "MySQL ya está conectado\n";
             return true;
         }
 
@@ -32,31 +30,28 @@ class MySQLDatabase
             $this->capsule = new Capsule;
             
             $this->capsule->addConnection([
-                'driver' => 'mysql',
+                'driver' => 'pgsql',
                 'host' => $options['host'],
                 'port' => $options['port'],
                 'database' => $options['database'],
                 'username' => $options['user'],
                 'password' => $options['password'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci',
+                'charset' => 'utf8',
                 'prefix' => '',
+                'schema' => 'public',
             ]);
 
             $this->capsule->setAsGlobal();
             $this->capsule->bootEloquent();
 
-            // Test connection
             $this->capsule->getConnection()->getPdo();
-
             $this->isConnected = true;
             
-            // Create tables if they don't exist
             $this->createTables();
             
             return true;
         } catch (\Exception $e) {
-            echo "Error connecting to MySQL: " . $e->getMessage() . "\n";
+            echo "Error connecting to PostgreSQL: " . $e->getMessage() . "\n";
             throw $e;
         }
     }
@@ -69,7 +64,7 @@ class MySQLDatabase
         return $this->capsule;
     }
 
-    private function createTables(): void
+    protected function createTables(): void
     {
         $schema = $this->capsule->schema();
         
