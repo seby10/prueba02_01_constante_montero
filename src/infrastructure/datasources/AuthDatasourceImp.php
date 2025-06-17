@@ -10,6 +10,7 @@ use App\Domain\DTOs\Auth\RegisterUserDto;
 use App\Domain\Entities\UserEntity;
 use App\Domain\Errors\CustomError;
 use App\Infrastructure\Mappers\UserMapper;
+use App\Infrastructure\UnitOfWork\UnitOfWork;
 
 class AuthDatasourceImp implements AuthDatasource
 {
@@ -52,23 +53,26 @@ class AuthDatasourceImp implements AuthDatasource
     public function register(RegisterUserDto $registerUserDto): UserEntity
     {
         try {
-            $emailExists = User::where('email', $registerUserDto->email)->first();
-            
-            if ($emailExists) {
-                throw CustomError::badRequest('User already exists');
-            }
+            return UnitOfWork::run(function () use ($registerUserDto) {
+                $emailExists = User::where('email', $registerUserDto->email)->first();
+                if ($emailExists) {
+                    throw CustomError::badRequest('User already exists');
+                }
 
-            $hashedPassword = call_user_func($this->hashAdapter, $registerUserDto->password);
+                $hashedPassword = call_user_func($this->hashAdapter, $registerUserDto->password);
 
-            $user = User::create([
-                'name' => $registerUserDto->name,
-                'email' => $registerUserDto->email,
-                'password' => $hashedPassword,
-                'roles' => ['USER_ROLE']
-            ]);
+                $user = User::create([
+                    'name' => $registerUserDto->name,
+                    'email' => $registerUserDto->email,
+                    'password' => $hashedPassword,
+                    'roles' => ['USER_ROLE']
+                ]);
 
-            return UserMapper::userEntityFromObject($user);
+                // Aquí podrías agregar más operaciones relacionadas, por ejemplo:
+                // Crear perfil, asignar permisos, etc.
 
+                return UserMapper::userEntityFromObject($user);
+            });
         } catch (CustomError $error) {
             throw $error;
         } catch (\Exception $error) {
